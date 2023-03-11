@@ -1,0 +1,58 @@
+{
+    "version": "2.0.0",
+    "type": "shell",
+    "presentation": { "reveal": "always" },
+    "options": {
+        "cwd": "${workspaceRoot}/build"
+    },
+    "tasks": [
+        {
+            "label": "cmakeReleaseTask",
+            "command": "cmake -DCMAKE_BUILD_TYPE=Release .. ",
+            "problemMatcher": []
+        },
+
+        {
+            "label": "cmakeDebugTask",
+            "command": "cmake -DCMAKE_BUILD_TYPE=Debug .. ",
+            "problemMatcher": []
+        },
+
+        {
+            "label": "makeTask",
+            "command": "make -j$(nproc)",
+            "problemMatcher": []
+        },
+
+        {
+            "label": "cleanTask",
+            "linux":{ "command": "rm -rf *" },
+            "problemMatcher": []
+        },
+
+        {
+            "label": "debugRun",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "cmakeDebugTask",
+                "makeTask"
+            ]
+        },
+
+        {
+            "label": "normalRun",
+            "type": "shell",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "cmakeReleaseTask",
+                "makeTask"
+            ],
+            "command": "bin/app",
+            "presentation": {
+                "reveal": "always",
+                "clear": true
+            }
+        }
+
+    ]
+}
